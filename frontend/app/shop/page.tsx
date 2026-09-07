@@ -232,7 +232,7 @@ export default function ShopPage() {
 
           {/* Product grid */}
           {!loading && filteredProducts.length > 0 && (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 items-stretch">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} {...product} />
               ))}

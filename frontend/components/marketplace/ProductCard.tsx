@@ -35,10 +35,10 @@ export default function ProductCard({
     : 0;
 
   return (
-    <Link href={`/products/${slug}`} className="block">
-      <div className="bg-white rounded-2xl shadow-card overflow-hidden active:scale-[0.98] transition-transform">
-        {/* Product Image */}
-        <div className="relative bg-gray-50 w-full aspect-square flex items-center justify-center p-6">
+    <Link href={`/products/${slug}`} className="block h-full">
+      <div className="bg-white rounded-2xl shadow-card overflow-hidden active:scale-[0.98] transition-transform flex flex-col h-full">
+        {/* Product Image - Fixed 1:1 Aspect Ratio */}
+        <div className="relative bg-gray-50 w-full aspect-square flex items-center justify-center p-6 shrink-0">
           {/* Badge */}
           {badgeText && (
             <div className="absolute top-3 left-3 bg-[#712CDC] text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wide z-10">
@@ -86,52 +86,56 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* Product Info */}
-        <div className="p-3">
-          {/* Brand label */}
-          <p className="text-[10px] text-[#712CDC] font-semibold uppercase tracking-wide mb-0.5">
-            {brand}
-          </p>
+        {/* Product Info - Flex fill with fixed 2-line title height */}
+        <div className="p-3 flex flex-col flex-1 justify-between">
+          <div>
+            {/* Brand label */}
+            <p className="text-[10px] text-[#712CDC] font-semibold uppercase tracking-wide mb-0.5">
+              {brand}
+            </p>
 
-          {/* Product name */}
-          <h3 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2 mb-1.5">
-            {name}
-          </h3>
+            {/* Product name - Fixed 2-line height so 1-line and 2-line titles match perfectly */}
+            <h3 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2 min-h-[2.5rem] flex items-center mb-1.5">
+              {name}
+            </h3>
+          </div>
 
-          {/* Price row */}
-          {defaultVariant && (
-            <div className="flex items-baseline gap-1.5 mb-1">
-              <span className="text-base font-bold text-gray-900">
-                {formatPrice(defaultVariant.price)}
-              </span>
-              {defaultVariant.mrp > defaultVariant.price && (
-                <span className="text-xs text-gray-400 mrp-strike">
-                  {formatPrice(defaultVariant.mrp)}
+          <div>
+            {/* Price row */}
+            {defaultVariant && (
+              <div className="flex items-baseline gap-1.5 mb-2">
+                <span className="text-base font-bold text-gray-900">
+                  {formatPrice(defaultVariant.price)}
                 </span>
-              )}
-            </div>
-          )}
+                {defaultVariant.mrp > defaultVariant.price && (
+                  <span className="text-xs text-gray-400 mrp-strike">
+                    {formatPrice(defaultVariant.mrp)}
+                  </span>
+                )}
+              </div>
+            )}
 
-          {/* EMI teaser */}
-          {lowestEmi && (
-            <div className="flex items-center gap-1 bg-[#F5F0FD] rounded-lg px-2 py-1.5">
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#712CDC"
-                strokeWidth="2"
-                className="flex-shrink-0"
-              >
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-              </svg>
-              <span className="text-[11px] text-[#712CDC] font-semibold">
-                {lowestEmi.isNoCost ? "No-cost " : ""}EMI from{" "}
-                {formatPrice(lowestEmi.monthlyAmount)}/mo
-              </span>
-            </div>
-          )}
+            {/* EMI teaser */}
+            {lowestEmi && (
+              <div className="flex items-center gap-1 bg-[#F5F0FD] rounded-lg px-2 py-1.5">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#712CDC"
+                  strokeWidth="2"
+                  className="flex-shrink-0"
+                >
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                </svg>
+                <span className="text-[11px] text-[#712CDC] font-semibold truncate">
+                  {lowestEmi.isNoCost ? "No-cost " : ""}EMI from{" "}
+                  {formatPrice(lowestEmi.monthlyAmount)}/mo
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Link>
