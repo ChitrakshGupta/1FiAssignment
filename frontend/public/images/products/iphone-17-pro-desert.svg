@@ -1,0 +1,43 @@
+<svg width="400" height="500" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="body_desert" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D6BC9D" />
+      <stop offset="50%" stop-color="#C5A683" />
+      <stop offset="100%" stop-color="#9E8060" />
+    </linearGradient>
+    <linearGradient id="frame_desert" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#BA9A76" />
+      <stop offset="100%" stop-color="#7B6144" />
+    </linearGradient>
+  </defs>
+  <!-- Frame -->
+  <rect x="75" y="30" width="250" height="440" rx="46" fill="url(#frame_desert)" stroke="#5E4832" stroke-width="2" />
+  <!-- Back Glass -->
+  <rect x="80" y="35" width="240" height="430" rx="42" fill="url(#body_desert)" />
+  
+  <!-- Camera Plateau -->
+  <rect x="95" y="50" width="125" height="125" rx="30" fill="url(#body_desert)" stroke="#B39371" stroke-width="2" />
+  
+  <!-- Camera Lenses -->
+  <circle cx="130" cy="85" r="22" fill="#1C1814" stroke="#8A6F52" stroke-width="4" />
+  <circle cx="130" cy="85" r="14" fill="#0D0A08" />
+  <circle cx="127" cy="82" r="5" fill="#4B3A5A" opacity="0.8" />
+  
+  <circle cx="130" cy="140" r="22" fill="#1C1814" stroke="#8A6F52" stroke-width="4" />
+  <circle cx="130" cy="140" r="14" fill="#0D0A08" />
+  <circle cx="127" cy="137" r="5" fill="#4B3A5A" opacity="0.8" />
+
+  <circle cx="185" cy="112" r="22" fill="#1C1814" stroke="#8A6F52" stroke-width="4" />
+  <circle cx="185" cy="112" r="14" fill="#0D0A08" />
+  <circle cx="182" cy="109" r="5" fill="#4B3A5A" opacity="0.8" />
+
+  <circle cx="185" cy="68" r="8" fill="#FFF9E6" stroke="#B39371" stroke-width="2" />
+  <circle cx="185" cy="155" r="7" fill="#111" />
+
+  <!-- Apple Logo -->
+  <g transform="translate(182, 230) scale(0.7)" fill="#785B3F" opacity="0.85">
+    <path d="M15.5 0C14.7 1.8 12.8 3.2 10.8 3C10.5 1.1 12.6 0 15.5 0ZM24.4 20.3C22.6 23 20.7 25.7 17.5 25.8C14.4 25.9 13.4 23.9 9.8 23.9C6.2 23.9 5 25.7 2.1 25.8C-1 25.9 -3.1 22.9 -4.9 20.2C-8.7 14.7 -11.6 4.7 -7.6 -2.3C-5.6 -5.8 -2.1 -8 -0.8 -8C2.2 -8 3.9 -6.1 6.8 -6.1C9.6 -6.1 11.1 -8 14.3 -8C17.3 -8 20.4 -6 22.3 -3.2C15.8 0.7 16.9 9.8 23 12.3C21.7 15.3 20 18.2 18 21.2"/>
+  </g>
+  
+  <text x="200" y="440" text-anchor="middle" fill="#785B3F" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" letter-spacing="2">DESERT TITANIUM · 17 PRO</text>
+</svg>

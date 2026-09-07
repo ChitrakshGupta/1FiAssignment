@@ -1,0 +1,54 @@
+// Prisma schema for 1Fi Marketplace
+// Switch provider to "postgresql" for production
+// DATABASE_URL="postgresql://user:pass@host:5432/db"
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  category    String    // "smartphones", "laptops", "audio"
+  brand       String
+  description String?
+  badgeText   String?   // e.g., "NEW", "BESTSELLER"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  variants Variant[]
+  emiPlans EmiPlan[]
+}
+
+model Variant {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  name     String  // "256GB · Natural Titanium"
+  storage  String? // "256GB"
+  color    String? // "Natural Titanium"
+  colorHex String? // "#E3D4BD" for color swatch
+  mrp      Int     // MRP in rupees
+  price    Int     // Sale price in rupees
+  imageUrl String?
+  isDefault Boolean @default(false)
+}
+
+model EmiPlan {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  tenureMonths   Int
+  interestRate   Float // annual % (0.0 for no-cost)
+  monthlyAmount  Int   // EMI in rupees
+  cashbackAmount Int   @default(0)
+  isNoCost       Boolean @default(false)
+}

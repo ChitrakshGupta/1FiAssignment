@@ -1,0 +1,22 @@
+<svg width="400" height="450" viewBox="0 0 400 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sony_silver" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EBE8E3" />
+      <stop offset="100%" stop-color="#C5C2BD" />
+    </linearGradient>
+  </defs>
+  
+  <path d="M120 220 C120 90 280 90 280 220" stroke="#DDD9D2" stroke-width="20" stroke-linecap="round" fill="none" />
+  <path d="M135 210 C135 110 265 110 265 210" stroke="#CCC7BE" stroke-width="12" stroke-linecap="round" fill="none" />
+
+  <rect x="112" y="210" width="16" height="50" rx="8" fill="#D5D1CA" stroke="#B8B4AC" stroke-width="1.5" />
+  <ellipse cx="120" cy="275" rx="42" ry="58" fill="url(#sony_silver)" stroke="#B8B4AC" stroke-width="2" />
+  <ellipse cx="120" cy="275" rx="30" ry="46" fill="#DCD9D2" />
+  
+  <rect x="272" y="210" width="16" height="50" rx="8" fill="#D5D1CA" stroke="#B8B4AC" stroke-width="1.5" />
+  <ellipse cx="280" cy="275" rx="42" ry="58" fill="url(#sony_silver)" stroke="#B8B4AC" stroke-width="2" />
+  <ellipse cx="280" cy="275" rx="30" ry="46" fill="#DCD9D2" />
+
+  <text x="200" y="375" text-anchor="middle" fill="#C5A059" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="3">SONY</text>
+  <text x="200" y="400" text-anchor="middle" fill="#888" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" letter-spacing="2">WH-1000XM5 · SILVER</text>
+</svg>

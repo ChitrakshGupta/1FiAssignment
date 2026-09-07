@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --color-1fi-purple: #712cdc;
+  --color-1fi-purple-dark: #5c22a5;
+  --color-1fi-purple-mid: #8c27fc;
+  --color-1fi-purple-light: #ede4fb;
+  --color-1fi-purple-bg: #f5f0fd;
+  --color-1fi-bg: #f5f5f7;
+  --color-1fi-text-primary: #111827;
+  --color-1fi-text-secondary: #6b7280;
+  --color-1fi-green: #16a34a;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+
+:root {
+  --color-primary: #712cdc;
+  --color-primary-dark: #5c22a5;
+  --color-bg: #f5f5f7;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  /* Match 1Fi app: max-width mobile, centered */
+  background-color: #e5e7eb;
+}
+
+body {
+  background-color: #f5f5f7;
+  color: #111827;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Safe area support for bottom nav */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar — hidden on mobile */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Strikethrough MRP style */
+.mrp-strike {
+  text-decoration: line-through;
+  text-decoration-color: #9CA3AF;
+}
+
+/* EMI plan row hover */
+.emi-row {
+  transition: background-color 0.15s ease;
+}
+.emi-row:active {
+  background-color: #F5F0FD;
+}
+
+/* Purple gradient used in hero banner (matches shop-page banner) */
+.hero-gradient {
+  background: linear-gradient(135deg, #712cdc 0%, #8c27fc 50%, #5c22a5 100%);
+}
+
+/* Skeleton loader */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}

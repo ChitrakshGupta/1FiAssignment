@@ -1,0 +1,28 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mac_silver" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="50%" stop-color="#E2E2E5" />
+      <stop offset="100%" stop-color="#C5C5C9" />
+    </linearGradient>
+    <linearGradient id="mac_screen3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#18191C" />
+      <stop offset="100%" stop-color="#08080A" />
+    </linearGradient>
+  </defs>
+  
+  <rect x="70" y="30" width="260" height="170" rx="14" fill="url(#mac_silver)" stroke="#B0B0B5" stroke-width="2" />
+  <rect x="78" y="38" width="244" height="154" rx="8" fill="#000" />
+  <rect x="82" y="42" width="236" height="146" rx="6" fill="url(#mac_screen3)" />
+  <circle cx="200" cy="115" r="50" fill="#06B6D4" opacity="0.3" filter="blur(15px)" />
+  <circle cx="160" cy="95" r="40" fill="#3B82F6" opacity="0.3" filter="blur(15px)" />
+  
+  <rect x="185" y="42" width="30" height="7" rx="3" fill="#000" />
+  <circle cx="200" cy="45" r="1.5" fill="#333" />
+
+  <path d="M40 220 L75 200 L325 200 L360 220 L350 235 L50 235 Z" fill="url(#mac_silver)" stroke="#B0B0B5" stroke-width="1.5" />
+  <rect x="160" y="215" width="80" height="16" rx="3" fill="#D2D2D7" stroke="#BCBCC2" stroke-width="1" />
+  <path d="M180 234 Q200 237 220 234 Z" fill="#9E9EA6" />
+
+  <text x="200" y="270" text-anchor="middle" fill="#787880" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" letter-spacing="2">MACBOOK AIR M4 · SILVER</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg width="400" height="500" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="s24_black" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2C2C2E" />
+      <stop offset="100%" stop-color="#18181A" />
+    </linearGradient>
+  </defs>
+  <!-- Sharp Rectangular Frame characteristic of Ultra -->
+  <rect x="75" y="30" width="250" height="440" rx="16" fill="#1C1C1E" stroke="#3A3A3C" stroke-width="3" />
+  <rect x="80" y="35" width="240" height="430" rx="12" fill="url(#s24_black)" />
+  
+  <!-- S24 Floating Camera Rings -->
+  <!-- Left column -->
+  <circle cx="115" cy="80" r="18" fill="#111" stroke="#4A4A4E" stroke-width="3" />
+  <circle cx="115" cy="80" r="11" fill="#000" />
+  <circle cx="113" cy="78" r="4" fill="#3D5A80" opacity="0.8" />
+
+  <circle cx="115" cy="130" r="18" fill="#111" stroke="#4A4A4E" stroke-width="3" />
+  <circle cx="115" cy="130" r="11" fill="#000" />
+  <circle cx="113" cy="128" r="4" fill="#3D5A80" opacity="0.8" />
+
+  <circle cx="115" cy="180" r="18" fill="#111" stroke="#4A4A4E" stroke-width="3" />
+  <circle cx="115" cy="180" r="11" fill="#000" />
+  <circle cx="113" cy="178" r="4" fill="#3D5A80" opacity="0.8" />
+
+  <!-- Right column -->
+  <circle cx="155" cy="80" r="8" fill="#FFF9E6" stroke="#4A4A4E" stroke-width="2" />
+  <circle cx="155" cy="130" r="14" fill="#111" stroke="#4A4A4E" stroke-width="3" />
+  <circle cx="155" cy="130" r="9" fill="#000" />
+
+  <!-- Samsung Logo -->
+  <text x="200" y="420" text-anchor="middle" fill="#666" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="4">SAMSUNG</text>
+  <text x="200" y="445" text-anchor="middle" fill="#444" font-family="-apple-system, sans-serif" font-size="10" font-weight="600" letter-spacing="2">GALAXY AI · S24 ULTRA</text>
+</svg>

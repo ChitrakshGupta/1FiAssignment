@@ -1,0 +1,36 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mac_midnight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#242B38" />
+      <stop offset="50%" stop-color="#1A202C" />
+      <stop offset="100%" stop-color="#10151E" />
+    </linearGradient>
+    <linearGradient id="mac_screen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Lid Display (Open Angle) -->
+  <rect x="70" y="30" width="260" height="170" rx="14" fill="url(#mac_midnight)" stroke="#334155" stroke-width="2" />
+  <!-- Screen Bezel -->
+  <rect x="78" y="38" width="244" height="154" rx="8" fill="#000" />
+  <!-- Screen Display with vibrant M4 Wallpaper effect -->
+  <rect x="82" y="42" width="236" height="146" rx="6" fill="url(#mac_screen)" />
+  <circle cx="200" cy="115" r="50" fill="#3B82F6" opacity="0.3" filter="blur(15px)" />
+  <circle cx="160" cy="95" r="40" fill="#8B5CF6" opacity="0.35" filter="blur(15px)" />
+  <circle cx="230" cy="130" r="35" fill="#EC4899" opacity="0.3" filter="blur(15px)" />
+  
+  <!-- Notch -->
+  <rect x="185" y="42" width="30" height="7" rx="3" fill="#000" />
+  <circle cx="200" cy="45" r="1.5" fill="#1E293B" />
+
+  <!-- Base / Keyboard Deck -->
+  <path d="M40 220 L75 200 L325 200 L360 220 L350 235 L50 235 Z" fill="url(#mac_midnight)" stroke="#334155" stroke-width="1.5" />
+  <!-- Trackpad -->
+  <rect x="160" y="215" width="80" height="16" rx="3" fill="#131822" stroke="#252D3D" stroke-width="1" />
+  <!-- Front Lip Cutout -->
+  <path d="M180 234 Q200 237 220 234 Z" fill="#0F141D" />
+
+  <text x="200" y="270" text-anchor="middle" fill="#64748B" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" letter-spacing="2">MACBOOK AIR M4 · MIDNIGHT</text>
+</svg>
