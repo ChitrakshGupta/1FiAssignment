@@ -258,7 +258,7 @@ model EmiPlan {
 |---|---|
 | **Frontend** | React 19, Next.js 16 (App Router), Tailwind CSS v4 |
 | **Backend** | Node.js, Express 4, TypeScript |
-| **Database & ORM** | SQLite (development) / PostgreSQL (production-ready), Prisma ORM |
+| **Database & ORM** | Neon PostgreSQL (cloud database), Prisma ORM |
 | **Typography** | Geist Sans & Geist Mono (Vercel) |
 | **Design Tokens** | 1Fi Brand Purple (`#712CDC`), Neutral Gray (`#F5F5F7`), Lavender (`#F5F1FD`) |
 
