@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import ShopBanner from "@/components/ShopBanner";
 import TabSwitcher from "@/components/TabSwitcher";
 import BottomNav from "@/components/BottomNav";
@@ -63,7 +63,18 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Cache products per category so switching tabs doesn't re-fetch
+  const cache = useRef<Record<string, ProductListItem[]>>({});
+
   const fetchProducts = useCallback(async () => {
+    const cacheKey = selectedCategory || "all";
+
+    // Serve from cache instantly — no loading spinner
+    if (cache.current[cacheKey]) {
+      setProducts(cache.current[cacheKey]);
+      return;
+    }
+
     setLoading(true);
     try {
       const url =
@@ -72,7 +83,10 @@ export default function ShopPage() {
           : "/api/products";
       const res = await fetch(url);
       const json = await res.json();
-      if (json.success) setProducts(json.data);
+      if (json.success) {
+        cache.current[cacheKey] = json.data;
+        setProducts(json.data);
+      }
     } catch (err) {
       console.error("Failed to load products", err);
     } finally {

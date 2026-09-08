@@ -3,6 +3,7 @@ import Image from "next/image";
 import { formatPrice, discountPercent } from "@/lib/formatters";
 
 interface ProductCardProps {
+  id: string;
   name: string;
   slug: string;
   brand: string;
@@ -22,8 +23,9 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({
+  id,
   name,
-  slug,
+  slug: _slug,
   brand,
   badgeText,
   defaultVariant,
@@ -34,7 +36,7 @@ export default function ProductCard({
     : 0;
 
   return (
-    <Link href={`/products/${slug}`} className="block h-full">
+    <Link href={`/products/${id}`} className="block h-full">
       <div className="bg-white rounded-2xl shadow-card overflow-hidden active:scale-[0.98] transition-transform flex flex-col h-full">
         {/* Product Image - Fixed 1:1 Aspect Ratio */}
         <div className="relative bg-gray-50 w-full aspect-square flex items-center justify-center p-6 shrink-0">

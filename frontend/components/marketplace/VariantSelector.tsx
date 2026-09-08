@@ -44,13 +44,35 @@ export default function VariantSelector({
   const hasStorage = variants.some((v) => v.storage);
   const hasColor = variants.some((v) => v.color && v.colorHex);
 
-  // Active storage tab
+  // Active storage tab — always derived from the currently selected variant
   const activeStorage = selectedVariant?.storage ?? storages[0];
 
-  // Colors available for active storage
+  // Colors available for the currently active storage
   const colorsForStorage = hasStorage
     ? (byStorage[activeStorage ?? ""] ?? [])
     : variants;
+
+  // ─── Storage tab click ───────────────────────────────────────────────────
+  // When the user picks a new storage, try to keep the same color if it exists
+  // in the new storage bucket; otherwise fall back to the first variant there.
+  function handleStorageChange(storage: string) {
+    const variantsInStorage = byStorage[storage] ?? [];
+    if (!variantsInStorage.length) return;
+
+    const currentColor = selectedVariant?.color;
+    const sameColor = currentColor
+      ? variantsInStorage.find((v) => v.color === currentColor)
+      : null;
+
+    onSelect(sameColor ?? variantsInStorage[0]);
+  }
+
+  // ─── Color swatch click ──────────────────────────────────────────────────
+  // Only variants within the active storage are rendered, so clicking a swatch
+  // never crosses a storage boundary — the bug is structurally impossible now.
+  function handleColorChange(variant: Variant) {
+    onSelect(variant);
+  }
 
   return (
     <div className="space-y-4">
@@ -63,12 +85,10 @@ export default function VariantSelector({
           <div className="flex flex-wrap gap-2">
             {storages.map((storage) => {
               const isActive = activeStorage === storage;
-              // pick first variant of this storage
-              const firstVariant = byStorage[storage]?.[0];
               return (
                 <button
                   key={storage}
-                  onClick={() => firstVariant && onSelect(firstVariant)}
+                  onClick={() => handleStorageChange(storage)}
                   className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
                     isActive
                       ? "border-[#712CDC] bg-[#F5F0FD] text-[#712CDC]"
@@ -83,8 +103,8 @@ export default function VariantSelector({
         </div>
       )}
 
-      {/* Color selector */}
-      {hasColor && (
+      {/* Color selector — only shows colors for the active storage */}
+      {hasColor && colorsForStorage.length > 1 && (
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
             Color
@@ -100,7 +120,7 @@ export default function VariantSelector({
               return (
                 <button
                   key={variant.id}
-                  onClick={() => onSelect(variant)}
+                  onClick={() => handleColorChange(variant)}
                   title={variant.color ?? variant.name}
                   className={`relative w-8 h-8 rounded-full border-2 transition-all ${
                     isSelected
@@ -132,7 +152,7 @@ export default function VariantSelector({
         </div>
       )}
 
-      {/* No color, show text chips */}
+      {/* No color — show text chips for variant name */}
       {!hasColor && variants.length > 1 && (
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
@@ -155,6 +175,24 @@ export default function VariantSelector({
                 </button>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* When only one color option exists per storage, show it as a text chip */}
+      {hasColor && colorsForStorage.length === 1 && (
+        <div>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            Color
+          </p>
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#712CDC] bg-[#F5F0FD] text-[#712CDC] text-sm font-medium"
+          >
+            <span
+              className="w-3 h-3 rounded-full border border-white/40 shadow-sm"
+              style={{ backgroundColor: colorsForStorage[0]?.colorHex ?? "#E5E7EB" }}
+            />
+            {colorsForStorage[0]?.color ?? colorsForStorage[0]?.name}
           </div>
         </div>
       )}

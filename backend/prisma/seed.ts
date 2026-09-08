@@ -330,8 +330,8 @@ async function main() {
   });
   await prisma.variant.createMany({
     data: [
-      { productId: airpods.id, name: "White · Lightning Case",  color: "White", colorHex: "#F5F5F7", mrp: 14900, price: 12900, imageUrl: `${CDN}/mobile-accessories/apple-airpods/1.webp`, isDefault: true  },
-      { productId: airpods.id, name: "White · MagSafe Case",    color: "White", colorHex: "#FFFFFF", mrp: 16900, price: 14900, imageUrl: `${CDN}/mobile-accessories/apple-airpods/2.webp`, isDefault: false },
+      { productId: airpods.id, name: "Lightning Charging Case",  color: "White · Lightning", colorHex: "#F0F0F0", mrp: 14900, price: 12900, imageUrl: `${CDN}/mobile-accessories/apple-airpods/1.webp`, isDefault: true  },
+      { productId: airpods.id, name: "MagSafe Charging Case",    color: "White · MagSafe",   colorHex: "#FFFFFF", mrp: 16900, price: 14900, imageUrl: `${CDN}/mobile-accessories/apple-airpods/2.webp`, isDefault: false },
     ],
   });
   await prisma.emiPlan.createMany({
@@ -360,9 +360,10 @@ async function main() {
   });
   await prisma.variant.createMany({
     data: [
-      { productId: airpodsMax.id, name: "Silver",    color: "Silver",   colorHex: "#C8C8C8", mrp: 59900, price: 54900, imageUrl: `${CDN}/mobile-accessories/apple-airpods-max-silver/1.webp`, isDefault: true  },
-      { productId: airpodsMax.id, name: "Space Grey", color: "Space Grey",colorHex: "#3A3A3C", mrp: 59900, price: 54900, imageUrl: `${CDN}/mobile-accessories/apple-airpods/3.webp`,          isDefault: false },
-      { productId: airpodsMax.id, name: "Sky Blue",   color: "Sky Blue",  colorHex: "#4A90D9", mrp: 59900, price: 54900, imageUrl: `${CDN}/mobile-accessories/apple-airpods/1.webp`,          isDefault: false },
+      // Only /1.webp is available for airpods-max-silver; use it for all colors
+      { productId: airpodsMax.id, name: "Silver",     color: "Silver",     colorHex: "#C8C8C8", mrp: 59900, price: 54900, imageUrl: `${CDN}/mobile-accessories/apple-airpods-max-silver/1.webp`, isDefault: true  },
+      { productId: airpodsMax.id, name: "Space Grey", color: "Space Grey", colorHex: "#3A3A3C", mrp: 59900, price: 54900, imageUrl: `${CDN}/mobile-accessories/apple-airpods-max-silver/1.webp`, isDefault: false },
+      { productId: airpodsMax.id, name: "Sky Blue",   color: "Sky Blue",   colorHex: "#4A90D9", mrp: 59900, price: 54900, imageUrl: `${CDN}/mobile-accessories/apple-airpods-max-silver/1.webp`, isDefault: false },
     ],
   });
   await prisma.emiPlan.createMany({
@@ -393,8 +394,9 @@ async function main() {
   });
   await prisma.variant.createMany({
     data: [
-      { productId: beatsFlex.id, name: "Beats Black",   color: "Beats Black",   colorHex: "#1C1C1C", mrp: 9999, price: 7999, imageUrl: `${CDN}/mobile-accessories/beats-flex-wireless-earphones/1.webp`, isDefault: true  },
-      { productId: beatsFlex.id, name: "Flame Blue",    color: "Flame Blue",    colorHex: "#1E3A8A", mrp: 9999, price: 7999, imageUrl: `${CDN}/mobile-accessories/apple-airpods/2.webp`,                  isDefault: false },
+      // Only /1.webp is available for beats-flex; use it for both color variants
+      { productId: beatsFlex.id, name: "Beats Black", color: "Beats Black", colorHex: "#1C1C1C", mrp: 9999, price: 7999, imageUrl: `${CDN}/mobile-accessories/beats-flex-wireless-earphones/1.webp`, isDefault: true  },
+      { productId: beatsFlex.id, name: "Flame Blue",  color: "Flame Blue",  colorHex: "#1E3A8A", mrp: 9999, price: 7999, imageUrl: `${CDN}/mobile-accessories/beats-flex-wireless-earphones/1.webp`, isDefault: false },
     ],
   });
   await prisma.emiPlan.createMany({

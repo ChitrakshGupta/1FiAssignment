@@ -64,9 +64,9 @@ function ShareIcon() {
 export default function ProductDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { slug } = use(params);
+  const { id } = use(params);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -85,7 +85,7 @@ export default function ProductDetailPage({
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`/api/products/${slug}`);
+        const res = await fetch(`/api/products/${id}`);
         const json = await res.json();
         if (!json.success) throw new Error("Not found");
         setProduct(json.data);
@@ -108,7 +108,7 @@ export default function ProductDetailPage({
       }
     }
     load();
-  }, [slug]);
+  }, [id]);
 
   const selectedPlan = product?.emiPlans.find((p) => p.id === selectedPlanId);
   // Dynamically calculate monthly EMI based on selected variant price
