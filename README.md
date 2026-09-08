@@ -114,7 +114,7 @@ Retrieves all marketplace products with their default variant and lowest availab
         "colorHex": "#E3D4BD",
         "mrp": 134900,
         "price": 127400,
-        "imageUrl": "/images/products/iphone-17-pro-natural.svg"
+        "imageUrl": "https://res.cloudinary.com/dglcqcarf/image/upload/f_auto,q_auto/v1788833432/1fi_products/iphone-17-pro-natural.jpg"
       },
       "lowestEmi": {
         "tenureMonths": 60,
@@ -259,6 +259,7 @@ model EmiPlan {
 | **Frontend** | React 19, Next.js 16 (App Router), Tailwind CSS v4 |
 | **Backend** | Node.js, Express 4, TypeScript |
 | **Database & ORM** | Neon PostgreSQL (cloud database), Prisma ORM |
+| **Image Hosting & CDN** | Cloudinary (cloud storage with `f_auto,q_auto` dynamic transformations) |
 | **Typography** | Geist Sans & Geist Mono (Vercel) |
 | **Design Tokens** | 1Fi Brand Purple (`#712CDC`), Neutral Gray (`#F5F5F7`), Lavender (`#F5F1FD`) |
 
@@ -270,11 +271,17 @@ model EmiPlan {
    - **Top Brands**: UI list matching 1Fi partner cards (Air India, Apple Premium Reseller, CaratLane, etc.)
    - **Nearby Stores**: Store distance listing with location dropdown
    - **1Fi Marketplace**: 2-column dynamic product grid with live search filter
+   - **Category Filter Chips**: Instant category filtering (`All Products`, `Smartphones`, `Laptops`, `Audio`) powered by `/api/products?category=`
 
 2. **Dynamic Product Detail Page (`/products/:slug`)**:
    - Dynamic variant picker for color swatches & storage pills
+   - **Dynamic EMI Recalculation**: EMI monthly amounts automatically and dynamically recalculate per selected variant price (e.g. 256GB vs 512GB) using the financial reducing-balance EMI formula and zero-cost tenure division
    - Expandable mutual fund-backed EMI plans table (0% to 10.5% p.a.)
    - Sticky full-width CTA button displaying selected monthly amount (`Continue at ₹X/mo →`)
+   - **Interactive Review & Pledge Checkout Flow**: Proceed CTA launches a slide-up checkout modal with plan breakdown, mutual fund security overview, and order confirmation with reference ID and direct links to `/emi-dues`.
 
-3. **Floating Navbar**:
+3. **Cloudinary Dynamic Image Optimization**:
+   - Product assets hosted on Cloudinary CDN with automatic WebP/AVIF delivery and responsive sizing.
+
+4. **Floating Navbar**:
    - Floating card design with rounded corners (`rounded-[32px]`), top purple indicator bar, and active icon radial glow matching the 1Fi mobile application.

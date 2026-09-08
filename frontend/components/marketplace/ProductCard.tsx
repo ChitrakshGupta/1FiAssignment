@@ -3,7 +3,6 @@ import Image from "next/image";
 import { formatPrice, discountPercent } from "@/lib/formatters";
 
 interface ProductCardProps {
-  id: string;
   name: string;
   slug: string;
   brand: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { formatPrice } from "@/lib/formatters";
+import { formatPrice, calculateMonthlyAmount } from "@/lib/formatters";
 
 interface EmiPlan {
   id: string;
@@ -27,9 +27,22 @@ export default function EmiPlansPanel({
 }: EmiPlansPanelProps) {
   const [expanded, setExpanded] = useState(true);
 
-  const lowestEmi = plans.reduce(
-    (min, p) => (p.monthlyAmount < min.monthlyAmount ? p : min),
-    plans[0]
+  // Dynamically recalculate EMI amount for each plan based on the selected variant price
+  const dynamicPlans = plans.map((plan) => ({
+    ...plan,
+    dynamicAmount: calculateMonthlyAmount(
+      productPrice,
+      plan.tenureMonths,
+      plan.interestRate
+    ),
+  }));
+
+  // Guard: nothing to render if plans list is empty
+  if (!dynamicPlans.length) return null;
+
+  const lowestEmi = dynamicPlans.reduce(
+    (min, p) => (p.dynamicAmount < min.dynamicAmount ? p : min),
+    dynamicPlans[0]
   );
 
   return (
@@ -42,7 +55,7 @@ export default function EmiPlansPanel({
         <div className="text-left">
           <p className="text-xs text-gray-400 font-medium">Starts at</p>
           <p className="text-base font-bold text-gray-900">
-            {formatPrice(lowestEmi?.monthlyAmount ?? 0)}
+            {formatPrice(lowestEmi?.dynamicAmount ?? 0)}
             <span className="text-sm font-normal text-gray-500">/mo</span>
           </p>
         </div>
@@ -70,7 +83,7 @@ export default function EmiPlansPanel({
       {/* EMI Plan Rows */}
       {expanded && (
         <div className="divide-y divide-gray-50">
-          {plans.map((plan, index) => {
+          {dynamicPlans.map((plan, index) => {
             const isSelected = plan.id === selectedPlanId;
             return (
               <button
@@ -78,7 +91,7 @@ export default function EmiPlansPanel({
                 onClick={() => onSelectPlan(plan)}
                 className={`w-full flex items-center px-4 py-3 text-left transition-colors emi-row ${
                   isSelected ? "bg-[#F5F0FD]" : "hover:bg-gray-50"
-                } ${index === plans.length - 1 ? "" : ""}`}
+                } ${index === dynamicPlans.length - 1 ? "" : ""}`}
               >
                 {/* Radio indicator */}
                 <div
@@ -111,7 +124,7 @@ export default function EmiPlansPanel({
                 {/* Right: monthly amount */}
                 <div className="text-right">
                   <span className="text-sm font-bold text-gray-900">
-                    {formatPrice(plan.monthlyAmount)}
+                    {formatPrice(plan.dynamicAmount)}
                   </span>
                   <span className="text-xs text-gray-400"> /mo</span>
                   {plan.cashbackAmount > 0 && (

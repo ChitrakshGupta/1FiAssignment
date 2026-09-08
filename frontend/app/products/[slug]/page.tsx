@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import BottomNav from "@/components/BottomNav";
 import VariantSelector from "@/components/marketplace/VariantSelector";
 import EmiPlansPanel from "@/components/marketplace/EmiPlansPanel";
-import { formatPrice, discountPercent } from "@/lib/formatters";
+import { formatPrice, discountPercent, calculateMonthlyAmount } from "@/lib/formatters";
 
 type Variant = {
   id: string;
@@ -73,7 +72,15 @@ export default function ProductDetailPage({
   const [error, setError] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [selectedPlanId, setSelectedPlanId] = useState<string>("");
-  const [proceeded, setProceeded] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [orderConfirmed, setOrderConfirmed] = useState(false);
+
+  // TODO: In production, replace with a real order ID returned from the backend
+  // after the pledge/order creation API call.
+  const orderRefId = useMemo(
+    () => `1FI-MF-${Math.floor(Math.random() * 90000) + 10000}`,
+    []
+  );
 
   useEffect(() => {
     async function load() {
@@ -104,6 +111,16 @@ export default function ProductDetailPage({
   }, [slug]);
 
   const selectedPlan = product?.emiPlans.find((p) => p.id === selectedPlanId);
+  // Dynamically calculate monthly EMI based on selected variant price
+  const dynamicMonthlyAmount =
+    selectedPlan && selectedVariant
+      ? calculateMonthlyAmount(
+          selectedVariant.price,
+          selectedPlan.tenureMonths,
+          selectedPlan.interestRate
+        )
+      : 0;
+
   const discount = selectedVariant
     ? discountPercent(selectedVariant.mrp, selectedVariant.price)
     : 0;
@@ -160,7 +177,6 @@ export default function ProductDetailPage({
         >
           Browse Marketplace
         </Link>
-        <BottomNav />
       </div>
     );
   }
@@ -366,69 +382,240 @@ export default function ProductDetailPage({
       </div>
 
       {/* ── STICKY BOTTOM CTA ── */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-4 pb-2 bg-gradient-to-t from-[#F5F5F7] to-transparent pt-6 z-40">
-        {proceeded ? (
-          <div className="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 flex items-center gap-3 animate-fade-in">
-            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-4 py-3 bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] z-40 pb-safe">
+        <button
+          onClick={() => setIsCheckoutOpen(true)}
+          disabled={!selectedPlanId}
+          className={`w-full py-4 rounded-full font-bold text-base text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
+            selectedPlanId
+              ? "bg-[#712CDC] hover:bg-[#5c22a5]"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
+        >
+          {selectedPlan ? (
+            <>
+              Continue at{" "}
+              <span className="font-extrabold">
+                {formatPrice(dynamicMonthlyAmount)}/mo
+              </span>
               <svg
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="white"
                 strokeWidth="2.5"
                 strokeLinecap="round"
               >
-                <polyline points="20 6 9 17 4 12" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
               </svg>
-            </div>
-            <div>
-              <p className="text-sm font-bold text-green-800">
-                Plan selected!
-              </p>
-              <p className="text-xs text-green-600">
-                {selectedPlan?.tenureMonths} months ·{" "}
-                {formatPrice(selectedPlan?.monthlyAmount ?? 0)}/mo
-              </p>
-            </div>
-          </div>
-        ) : (
-          <button
-            onClick={() => setProceeded(true)}
-            disabled={!selectedPlanId}
-            className={`w-full py-4 rounded-full font-bold text-base text-white flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
-              selectedPlanId
-                ? "bg-[#712CDC] hover:bg-[#5c22a5]"
-                : "bg-gray-300 cursor-not-allowed"
-            }`}
-          >
-            {selectedPlan ? (
-              <>
-                Continue at{" "}
-                <span className="font-extrabold">
-                  {formatPrice(selectedPlan.monthlyAmount)}/mo
-                </span>
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                >
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </>
-            ) : (
-              "Select an EMI plan"
-            )}
-          </button>
-        )}
+            </>
+          ) : (
+            "Select an EMI plan"
+          )}
+        </button>
       </div>
 
-      <BottomNav />
+      {/* ── CHECKOUT / PLEDGE BOTTOM SHEET MODAL ── */}
+      {isCheckoutOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-xs animate-fade-in"
+          onClick={() => {
+            setIsCheckoutOpen(false);
+            if (orderConfirmed) setOrderConfirmed(false);
+          }}
+        >
+          <div
+            className="w-full max-w-[430px] bg-white rounded-t-[32px] p-6 pb-8 shadow-2xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {orderConfirmed ? "Order Confirmed!" : "Review & Pledge MF"}
+                </h3>
+                <p className="text-xs text-gray-500">
+                  {orderConfirmed
+                    ? "Your mutual fund collateral has been secured"
+                    : "1Fi Mutual Fund-backed EMI Plan"}
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setIsCheckoutOpen(false);
+                  if (orderConfirmed) setOrderConfirmed(false);
+                }}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 active:bg-gray-200"
+              >
+                ✕
+              </button>
+            </div>
+
+            {!orderConfirmed ? (
+              <div className="py-4 space-y-4">
+                {/* Product Summary */}
+                <div className="flex items-center gap-3 bg-gray-50 p-3.5 rounded-2xl border border-gray-100">
+                  {selectedVariant?.imageUrl && (
+                    <div className="relative w-14 h-14 bg-white rounded-xl overflow-hidden shrink-0 border border-gray-100">
+                      <Image
+                        src={selectedVariant.imageUrl}
+                        alt={product.name}
+                        fill
+                        unoptimized
+                        className="object-contain p-1"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-gray-900 truncate">
+                      {product.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {selectedVariant?.name}
+                    </p>
+                    <p className="text-sm font-bold text-[#712CDC] mt-0.5">
+                      {formatPrice(selectedVariant?.price ?? 0)}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Plan Breakdown */}
+                <div className="border border-gray-100 rounded-2xl p-4 space-y-3 bg-white shadow-sm">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-500">Monthly EMI</span>
+                    <span className="font-bold text-gray-900 text-base">
+                      {formatPrice(dynamicMonthlyAmount)}/mo
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-500">Tenure</span>
+                    <span className="font-semibold text-gray-800">
+                      {selectedPlan?.tenureMonths} Months
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-500">Annual Interest</span>
+                    <span
+                      className={`font-semibold ${
+                        selectedPlan?.isNoCost
+                          ? "text-green-600"
+                          : "text-gray-800"
+                      }`}
+                    >
+                      {selectedPlan?.interestRate === 0
+                        ? "0% (No-Cost EMI)"
+                        : `${selectedPlan?.interestRate}% p.a.`}
+                    </span>
+                  </div>
+                  {selectedPlan && selectedPlan.cashbackAmount > 0 && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">Cashback</span>
+                      <span className="font-bold text-green-600">
+                        +{formatPrice(selectedPlan.cashbackAmount)}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex justify-between items-center text-sm pt-2 border-t border-gray-100">
+                    <span className="text-gray-500">Collateral Pledged</span>
+                    <span className="font-semibold text-[#712CDC]">
+                      Mutual Fund Portfolio
+                    </span>
+                  </div>
+                </div>
+
+                {/* MF Benefit Note */}
+                <div className="flex items-start gap-2.5 bg-[#F5F0FD] p-3.5 rounded-2xl text-xs text-[#712CDC]">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="shrink-0 mt-0.5"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                  </svg>
+                  <p className="leading-relaxed">
+                    Your mutual fund units stay invested and continue earning
+                    market returns while your monthly EMIs are auto-debited.
+                  </p>
+                </div>
+
+                {/* Action CTA */}
+                <button
+                  onClick={() => setOrderConfirmed(true)}
+                  className="w-full py-4 rounded-full font-bold text-base text-white bg-[#712CDC] hover:bg-[#5c22a5] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2"
+                >
+                  Pledge & Confirm Plan
+                </button>
+              </div>
+            ) : (
+              <div className="py-6 flex flex-col items-center text-center space-y-4">
+                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-lg font-bold text-gray-900">
+                    Application Approved!
+                  </h4>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Your {selectedPlan?.tenureMonths}-month EMI plan at{" "}
+                    {formatPrice(dynamicMonthlyAmount)}/mo has been set up
+                    against your mutual fund collateral.
+                  </p>
+                </div>
+
+                <div className="w-full bg-gray-50 rounded-2xl p-4 text-xs text-gray-600 text-left space-y-1.5 border border-gray-100">
+                  <div className="flex justify-between">
+                    <span>Reference ID:</span>
+                    <span className="font-mono font-bold text-gray-800">
+                      {orderRefId}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>First EMI Due:</span>
+                    <span className="font-semibold text-gray-800">
+                      1st of next month
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Collateral Status:</span>
+                    <span className="font-semibold text-green-600">
+                      Pledged & Safe
+                    </span>
+                  </div>
+                </div>
+
+                <div className="w-full flex flex-col gap-2 pt-2">
+                  <Link
+                    href="/emi-dues"
+                    className="w-full py-3.5 rounded-full font-bold text-sm text-white bg-[#712CDC] hover:bg-[#5c22a5] flex items-center justify-center"
+                  >
+                    View in EMI Dues
+                  </Link>
+                  <Link
+                    href="/shop"
+                    className="w-full py-3.5 rounded-full font-semibold text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+                  >
+                    Back to Marketplace
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

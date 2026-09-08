@@ -28,10 +28,18 @@ const NEARBY_STORES = [
   { name: "Apple Authorised Reseller", distance: "2.8 KM", logo: "AP" },
 ];
 
+const CATEGORIES = [
+  { id: "all", label: "All Products" },
+  { id: "smartphones", label: "Smartphones" },
+  { id: "laptops", label: "Laptops" },
+  { id: "audio", label: "Audio" },
+];
+
 type ProductListItem = {
   id: string;
   name: string;
   slug: string;
+  category?: string;
   brand: string;
   badgeText?: string | null;
   defaultVariant: {
@@ -50,6 +58,7 @@ type ProductListItem = {
 
 export default function ShopPage() {
   const [activeTab, setActiveTab] = useState<Tab>("marketplace");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [products, setProducts] = useState<ProductListItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,7 +66,11 @@ export default function ShopPage() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/products");
+      const url =
+        selectedCategory && selectedCategory !== "all"
+          ? `/api/products?category=${encodeURIComponent(selectedCategory)}`
+          : "/api/products";
+      const res = await fetch(url);
       const json = await res.json();
       if (json.success) setProducts(json.data);
     } catch (err) {
@@ -65,11 +78,13 @@ export default function ShopPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [selectedCategory]);
 
   useEffect(() => {
-    if (activeTab === "marketplace") fetchProducts();
-  }, [activeTab, fetchProducts]);
+    if (activeTab === "marketplace") {
+      fetchProducts();
+    }
+  }, [activeTab, selectedCategory, fetchProducts]);
 
   // Filter products by search query
   const filteredProducts = products.filter(
@@ -202,7 +217,7 @@ export default function ShopPage() {
       {activeTab === "marketplace" && (
         <div className="px-4 py-4">
           {/* Section header */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 space-y-3">
             <div>
               <h2 className="text-lg font-bold text-gray-900">
                 1Fi Marketplace
@@ -211,7 +226,26 @@ export default function ShopPage() {
                 Buy with mutual fund-backed EMIs
               </p>
             </div>
+
             {/* Category filter chips */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+              {CATEGORIES.map((cat) => {
+                const isSelected = selectedCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                      isSelected
+                        ? "bg-[#712CDC] text-white shadow-sm"
+                        : "bg-white text-gray-600 border border-gray-200/80 hover:border-gray-300"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Loading state */}
