@@ -8,10 +8,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// CORS configuration via ALLOWED_ORIGIN env var
+// CORS configuration via environment variable
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "http://localhost:3000";
+
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGIN || "http://localhost:3000",
+    origin: ALLOWED_ORIGIN,
     credentials: true,
   })
 );
