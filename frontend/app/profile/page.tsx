@@ -1,3 +1,6 @@
+"use client";
+
+import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 
 const UserIcon = () => (
@@ -273,13 +276,19 @@ export default function ProfilePage() {
 
       {/* Logout Card */}
       <div className="px-5 mt-2.5">
-        <button
-          type="button"
+        <Link
+          href="/login"
+          onClick={() => {
+            try {
+              localStorage.removeItem("1fi_logged_in");
+              localStorage.removeItem("1fi_user_phone");
+            } catch {}
+          }}
           className="w-full py-2.5 bg-white border border-[#F1F5F9] rounded-2xl flex items-center justify-center gap-2 text-[#EF4444] font-bold text-[14px] shadow-[0_1px_2px_rgba(0,0,0,0.02)] active:bg-red-50/50 transition-colors"
         >
           <LogoutIcon />
           <span>Log out</span>
-        </button>
+        </Link>
       </div>
 
       <BottomNav />
